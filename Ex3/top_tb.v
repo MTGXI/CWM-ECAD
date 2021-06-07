@@ -44,21 +44,23 @@ module top_tb(
 				if ((on_off ==1) && (counter_out < counter_prev)) begin//checking that counter inc/dec correctly
 					$display("TEST FAILED");
 					err = 1;
-				end
-				else if ((on_off == 0) && (counter_out > counter_prev)) begin
+		
+				else if ((on_off == 0) && (counter_out > counter_prev)) 
 					$display("TEST FAILED");
 					err = 1;
+
+				else
 				end
 				
 				//check counter reset
 				if ((rst==1) && (counter_out != 0)) begin
 					$display("TEST FAILED");
 					err = 1;
-				end
 
-				if ((change==0) && (counter_out != counter_prev)) begin
+				if ((change==0) && (counter_out != counter_prev))
 					$display("TEST FAILED");
 					err = 1;
+				else
 				end
 			counter_prev = counter_out;
 
