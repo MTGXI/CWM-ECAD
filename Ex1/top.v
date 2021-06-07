@@ -33,6 +33,6 @@ module blinds(
     wire   out;
 
       //Logic working through the truth table
-	assign out = (a==0 && b==0) ? func[0] ; (a==0 && b==1) ? func[1] ; (a==1 && b==0) ? func[2] ; (a==1 && b==1) ? func[3];
+	assign out = (a==1'b0 && b==1'b0) ? func[1'd0] : (a==1'b0 && b==1'b1) ? func[1'd1] : (a==1'b1 && b==1'b0) ? func[1'd2] : (a==1'b1 && b==1'b1) ? func[1'd3];
  
 endmodule
