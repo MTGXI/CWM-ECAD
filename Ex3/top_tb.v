@@ -18,7 +18,7 @@ module top_tb(
 
 //Regitsers and wires
 	reg clk,rst,change,on_off,err;
-	wire [7:0] counter_prev;
+	reg [7:0] counter_prev;
 	wire [7:0] counter_out;
 
 //Clock generation
@@ -33,8 +33,9 @@ module top_tb(
     initial begin
 		err = 0;
 		//rst = 1;
-		assign counter_out = 0;
-		assign counter_prev = counter_out;
+		//assign counter_out = 1'b0;
+		counter_prev = counter_out;
+		
 		//not sure whether value of change/on_off should be initialised
 		//change = 0;
 		//on_off = 0;
@@ -59,6 +60,7 @@ module top_tb(
 					$display("TEST FAILED");
 					err = 1;
 				end
+			counter_prev = counter_out;
 
 		end
 	end
