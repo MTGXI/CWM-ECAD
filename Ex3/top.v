@@ -29,17 +29,20 @@ module monitor (rst,clk,change,on_off,counter_out);
 
 	assign counter_out = c;
     //Up-down counter logic
-	always @(posedge clk or posedge rst) begin
+	always @(posedge clk) begin
 		if(rst)
 			c <= 0;
-		else
-			if(change==0)
+		else begin
+			if(change==0) begin
 				c <= c;
-			else
+			end
+			else begin
 				if(on_off==1)
 					c = c+1;
 				else if (on_off==0)
       				c = c-1;
+			end
+		end
 	end
 
 endmodule

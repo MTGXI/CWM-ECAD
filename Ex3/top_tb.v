@@ -18,7 +18,8 @@ module top_tb(
 
 //Regitsers and wires
 	reg clk,rst,change,on_off,err;
-	reg [7:0] counter_out;
+	wire [7:0] counter_prev;
+	wire [7:0] counter_out;
 
 //Clock generation
 	 initial
@@ -30,11 +31,41 @@ module top_tb(
 
 //logic and output tests
     initial begin
-	
+		err = 0;
+		//rst = 1;
+		assign counter_out = 0;
+		assign counter_prev = counter_out;
+		//not sure whether value of change/on_off should be initialised
+		//change = 0;
+		//on_off = 0;
+		forever begin
+			#CLK_PERIOD 
+				if ((on_off ==1) && (counter_out < counter_prev)) begin//checking that counter inc/dec correctly
+					$display("TEST FAILED");
+					err = 1;
+				end
+				else if ((on_off == 0) && (counter_out > counter_prev)) begin
+					$display("TEST FAILED");
+					err = 1;
+				end
+				
+				//check counter reset
+				if ((rst==1) && (counter_out != 0)) begin
+					$display("TEST FAILED");
+					err = 1;
+				end
+
+				if ((change==0) && (counter_out != counter_prev)) begin
+					$display("TEST FAILED");
+					err = 1;
+				end
+
+		end
 	end
+
 //Finish test, check for success
 	initial begin
-        #50 
+        #50 //wait 50 clocks before checking if any fails have been flagged
         if (err==0)
           $display("TEST PASSED");
         $finish;
@@ -46,7 +77,7 @@ monitor top (
 	.rst (rst),
 	.change (change),
 	.on_off (on_off),
-	.counter_out (counter_out[7:0])
+	.counter_out (counter_out)
 	);
  
 endmodule 
