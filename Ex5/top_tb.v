@@ -36,12 +36,12 @@ module top_tb(
 		//for instance, start in idle with initial temp of 15
 		temperature = 5'b01111;
 		state = 2'b00;
-		
+
 		prev_state = state;
 		//increment temp each time to see state changes
 		forever begin
 			#CLK_PERIOD;
-			if ((temperature<20)&&(state != 2'b10)) begin
+			if ((temperature<18)&&(state != 2'b10)) begin
 				$display("***TEST FAILED 1***");
 				err = 1;
 			end
@@ -49,10 +49,10 @@ module top_tb(
 				$display("***TEST FAILED 2***");
 				err = 1;
 			end
-			if ((prev_state != state)&&(state != 2'b00)) begin
-				$display("***TEST FAILED 3***");
-				err = 1;
-			end
+			//if ((prev_state != state)&&(state != 2'b00)) begin
+			//	$display("***TEST FAILED 3***");
+			//	err = 1;
+			//end
 		temperature = temperature + 5'd1;
 		prev_state = state;
 		end
@@ -72,8 +72,8 @@ module top_tb(
 	AC top (
 	.clk (clk),
 	.temperature (temperature),
-	.heating (heating),
-	.cooling (cooling)
+	.heating (state[1]),
+	.cooling (state[0])
 	);
 
 endmodule
