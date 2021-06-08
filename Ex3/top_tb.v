@@ -13,15 +13,15 @@
 module top_tb(
     );
     
-//Parameters
+	//Parameters
 	parameter CLK_PERIOD = 10;
 
-//Regitsers and wires
+	//Regitsers and wires
 	reg clk,rst,change,on_off,err;
 	reg [7:0] counter_prev;
 	wire [7:0] counter_out;
 
-//Clock generation
+	//Clock generation
 	 initial
 		begin
 		   clk = 1'b0;
@@ -29,8 +29,8 @@ module top_tb(
 		     #(CLK_PERIOD/2) clk=~clk;//every half clock period
 		 end
 
-//logic and output tests
-    initial begin
+	//logic and output tests
+	initial begin
 		err = 0;
 		//rst = 1;
 		//assign counter_out = 1'b0;
@@ -39,49 +39,52 @@ module top_tb(
 		//not sure whether value of change/on_off should be initialised
 		//change = 0;
 		//on_off = 0;
+
 		forever begin
 			#CLK_PERIOD 
-				if ((on_off ==1) && (counter_out < counter_prev)) begin//checking that counter inc/dec correctly
-					$display("TEST FAILED");
-					err = 1;
-		
-				else if ((on_off == 0) && (counter_out > counter_prev)) 
-					$display("TEST FAILED");
-					err = 1;
+			if ((on_off ==1) && (counter_out < counter_prev)) begin//checking that counter inc/dec correctly
+				$display("TEST FAILED");
+				err = 1;
+			end
+			else if ((on_off == 0) && (counter_out > counter_prev)) begin
+				$display("TEST FAILED");
+				err = 1;
+			end
+			else begin
+			end
+			
+			//check counter reset
+			if ((rst==1) && (counter_out != 0)) begin
+				$display("TEST FAILED");
+				err = 1;
+			end
 
-				else
-				end
-				
-				//check counter reset
-				if ((rst==1) && (counter_out != 0)) begin
-					$display("TEST FAILED");
-					err = 1;
-
-				if ((change==0) && (counter_out != counter_prev))
-					$display("TEST FAILED");
-					err = 1;
-				else
-				end
+			if ((change==0) && (counter_out != counter_prev)) begin
+				$display("TEST FAILED");
+				err = 1;
+			end
+			else begin
+			end
+			
 			counter_prev = counter_out;
-
 		end
 	end
 
-//Finish test, check for success
+	//Finish test, check for success
 	initial begin
         #50 //wait 50 clocks before checking if any fails have been flagged
         if (err==0)
           $display("TEST PASSED");
         $finish;
-      end
+	end
 
-//Instantiate counter module
-monitor top (
-	.clk (clk),
-	.rst (rst),
-	.change (change),
-	.on_off (on_off),
-	.counter_out (counter_out)
-	);
+	//Instantiate counter module
+	monitor top (
+		.clk (clk),
+		.rst (rst),
+		.change (change),
+		.on_off (on_off),
+		.counter_out (counter_out)
+		);
  
 endmodule 
