@@ -72,8 +72,8 @@ module top_tb(
 	AC top (
 	.clk (clk),
 	.temperature (temperature),
-	.heating (state[1]),
-	.cooling (state[0])
+	.heating (heating),
+	.cooling (cooling)
 	);
 
 endmodule
