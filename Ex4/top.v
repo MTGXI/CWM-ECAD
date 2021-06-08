@@ -31,16 +31,20 @@ module lights (rst,clk,button,colour);
 			colour = 3'd0;
 		end
 		else begin
-			if ((colour==3'd0)||(colour==3'd7)) begin
-				#1;
-				colour = 3'd1;
+			if (button==1'b0) begin
+				if ((colour==3'd0)||(colour==3'd7)) begin
+					#1
+					colour = 3'd1;
+				end
 			end
 			else begin
-				if (button==1'b1) begin
-					#1;
+				if (colour < 3'd6) begin
+					#1
 					colour = colour + 3'd1;
 				end
 				else begin
+					#1
+					colour = 3'd1;
 				end
 			end
 		end

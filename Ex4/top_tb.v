@@ -15,7 +15,8 @@ module top_tb(
 	parameter CLK_PERIOD = 10;
 
 	//registers
-	reg clk,rst,err;
+	reg clk,rst,err,button;
+	reg [2:0] colour_prev;
 	wire [2:0] colour;
 	
 
@@ -27,14 +28,52 @@ module top_tb(
      end
 
 	//logic and testing output
+	
+	initial begin
+		err = 0;
+		button = 0;
+		rst = 1;
+		colour_prev = colour;
+		
+		#(CLK_PERIOD*10);
+		if ((colour==3'd0) || (colour==3'd7)) begin
+			$display("***TEST FAILED***");
+			err = 1;
+		end
 
-
+		rst = 0;
+		if (colour != 3'd1) begin
+			$display("***TEST FAILED***");
+			err = 1;
+		end
+		
+		#(CLK_PERIOD*10);
+		if (colour != 3'd0) begin
+			$display("***TEST FAILED***");
+			err = 1;
+		end	
+	
+		button = 1;
+		
+		////??????/////
+		
+		forever begin
+			#CLK_PERIOD
+			if(colour_prev == colour) begin
+				if (button==1'b1) begin
+					$display("***TEST FAILED***");
+					err = 1;
+				end
+			end
+			colour_prev = colour;
+		end
+	end
 
 	//end sim block
 	initial begin
         #50 
         if (err==0)
-          $display("***TEST PASSED! :) ***");
+          $display("***TEST PASSED***");
         $finish;
       end
 
@@ -42,4 +81,4 @@ module top_tb(
 	//instantiation
 	lights top (.clk (clk),.rst (rst),.colour (colour));
 
-end module
+endmodule
