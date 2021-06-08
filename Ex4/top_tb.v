@@ -32,36 +32,33 @@ module top_tb(
 	initial begin
 		err = 0;
 		button = 0;
-		rst = 1;
+		rst = 0;
 		colour_prev = colour;
 		
+		#(CLK_PERIOD);
+		if (colour != 3'd1) begin
+			$display("***TEST FAILED 1***");
+			err = 1;
+		end
+		
+
+		rst = 1;
 		#(CLK_PERIOD*10);
-		if ((colour==3'd0) || (colour==3'd7)) begin
-			$display("***TEST FAILED***");
+		if (colour!=3'd0) begin
+			$display("***TEST FAILED 2***");
 			err = 1;
 		end
 
-		rst = 0;
-		if (colour != 3'd1) begin
-			$display("***TEST FAILED***");
-			err = 1;
-		end
-		
-		#(CLK_PERIOD*10);
-		if (colour != 3'd0) begin
-			$display("***TEST FAILED***");
-			err = 1;
-		end	
-	
+		#(CLK_PERIOD)
 		button = 1;
-		
+		rst = 0;
 		////??????/////
 		
 		forever begin
 			#CLK_PERIOD
 			if(colour_prev == colour) begin
 				if (button==1'b1) begin
-					$display("***TEST FAILED***");
+					$display("***TEST FAILED 3***");
 					err = 1;
 				end
 			end
@@ -71,7 +68,7 @@ module top_tb(
 
 	//end sim block
 	initial begin
-        #50 
+        #500 
         if (err==0)
           $display("***TEST PASSED***");
         $finish;
