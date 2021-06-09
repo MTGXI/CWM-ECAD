@@ -32,14 +32,33 @@ module top_tb(
 	//logic and output tests
 	initial begin
 		err = 0;
-		//rst = 1;
-		//assign counter_out = 1'b0;
-		counter_prev = counter_out;
+		rst = 1;
 		
-		//not sure whether value of change/on_off should be initialised
-		//change = 0;
-		//on_off = 0;
+		
+		
+		change = 0;
+		on_off = 1;
 
+		#(CLK_PERIOD*3);
+		//ensure counter has reset to 0 	
+		if (counter_out != 0) begin
+			$display("TEST FAILED");
+			err = 1;
+		end
+
+		rst = 0;
+		//check counter value stays constant for change = 0 no reset
+		#(CLK_PERIOD*3);
+		if (counter_out != counter_prev) begin
+			$display("TEST FAILED");
+			err = 1;
+		end
+		
+		counter_prev = counter_out;
+
+
+		change = 1;
+		
 		forever begin
 			#CLK_PERIOD 
 			if ((on_off ==1) && (counter_out < counter_prev)) begin//checking that counter inc/dec correctly
@@ -58,21 +77,21 @@ module top_tb(
 				$display("TEST FAILED");
 				err = 1;
 			end
-
-			if ((change==0) && (counter_out != counter_prev)) begin
-				$display("TEST FAILED");
-				err = 1;
-			end
-			else begin
-			end
-			
 			counter_prev = counter_out;
+
+			//on_off testing to check coutning correctly
+			if (counter_out == 10) begin
+				on_off =~ on_off;
+			end
+			if (counter_out == 0) begin
+				on_off =~ on_off;
+			end 
 		end
 	end
 
 	//Finish test, check for success
 	initial begin
-        #50 //wait 50 clocks before checking if any fails have been flagged
+        #250 //wait # clocks before checking if any fails have been flagged
         if (err==0)
           $display("TEST PASSED");
         $finish;
