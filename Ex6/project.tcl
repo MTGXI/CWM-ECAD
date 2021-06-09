@@ -20,6 +20,9 @@ create_fileset -constrset -quiet constraints
 #add_files -fileset constraints -norecurse ${project_constraints}
 #set_property is_enabled false [get_files ${project_constraints}]
 
+create_ip -name blk_mem_gen -vendor xilinx.com -library ip -version 8.4 -module_name mybram
+set_property -dict [list CONFIG.Component_Name {mybram} CONFIG.Write_Width_A {24} CONFIG.Write_Depth_A {8} CONFIG.Read_Width_A {24} CONFIG.Write_Width_B {24} CONFIG.Read_Width_B {24} CONFIG.Load_Init_File {true} CONFIG.Coe_File {/home/centos/CWM-ECAD/Ex6/mem.coe} CONFIG.Fill_Remaining_Memory_Locations {true}] [get_ips mybram]
+
 #Todo: add verilog modules here
 read_verilog "top.v"
 read_verilog "top_tb.v"
