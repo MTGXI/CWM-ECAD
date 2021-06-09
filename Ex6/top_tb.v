@@ -34,15 +34,18 @@ module top_tb(
 		enable = 0;
 		colour = 3'b0;
 		
+		#CLK_PERIOD //gives simgui time to switch states
 		enable = 1; //tells to look up a colour
 		forever begin
-			#CLK_PERIOD
+			#(CLK_PERIOD*2)
 			$display("colour=%d, rgb=%d", colour,rgb);
-			
+			if ((colour[0]!=(&rgb[7:0]))||(colour[1]!=(&rgb[15:8]))||(colour[2]!=(&rgb[23:16]))) begin	//do bitwise and on each to ensure correct coversion
+				$display("***TEST FAILED*** - RGB and colour values don't match");
+				err = 1;
+				//$finish;
+			end
 			colour = colour + 3'd1;
 		end
-
-		
 	end
 
 	//end sim block
