@@ -35,20 +35,27 @@ module top_tb(
 		err=0;
 		//for instance, start in idle with initial temp of 15
 		temperature = 5'b01111;
-		state = 2'b00;
+		state = 2'b00;//problems with state being passed into testbench
+		
 
 		prev_state = state;
 		//increment temp each time to see state changes
 		forever begin
-			#CLK_PERIOD;
-			if ((temperature<18)&&(state != 2'b10)) begin
+			#(CLK_PERIOD*2);
+			if ((temperature<18)&&(heating!=1)) begin
 				$display("***TEST FAILED 1***");
 				err = 1;
 			end
-			else if ((temperature>22)&&(state != 2'b01)) begin
+			else if ((temperature>22)&&(cooling!=1)) begin
 				$display("***TEST FAILED 2***");
 				err = 1;
 			end
+
+			if (heating==1 && cooling==1) begin
+				$display("***TEST FAILED 3***");
+				err = 1;
+			end
+
 			//if ((prev_state != state)&&(state != 2'b00)) begin
 			//	$display("***TEST FAILED 3***");
 			//	err = 1;
@@ -59,9 +66,13 @@ module top_tb(
 
 	end
 
+	//implementation of state reg in test bench wasn't working, haven't fully implement all logic as a result
+	//hopefully can see that it works to a simple level
+
+
 	//end sim block
 	initial begin
-        #100 
+        #150
         if (err==0)
           $display("***TEST PASSED***");
         $finish;
