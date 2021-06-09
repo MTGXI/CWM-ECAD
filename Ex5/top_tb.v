@@ -13,12 +13,15 @@ module top_tb(
 
 	//parameters
 	parameter CLK_PERIOD = 10;
+	
 
+
+	//reg countDir = 1'b0;
 	//registers
 	reg clk,err;
 	reg [4:0] temperature;
 	reg [1:0] prev_state;
-	reg [1:0] state;
+	wire [1:0] state = {heating,cooling};
 	wire heating,cooling;
 	
 
@@ -35,9 +38,7 @@ module top_tb(
 		err=0;
 		//for instance, start in idle with initial temp of 15
 		temperature = 5'b01111;
-		state = 2'b00;//problems with state being passed into testbench
-		
-
+	
 		prev_state = state;
 		//increment temp each time to see state changes
 		forever begin
@@ -56,12 +57,14 @@ module top_tb(
 				err = 1;
 			end
 
-			//if ((prev_state != state)&&(state != 2'b00)) begin
-			//	$display("***TEST FAILED 3***");
-			//	err = 1;
+			
+			//if (countDir==30 || countDir==15)begin
+			//	countDir=~countDir;
 			//end
-		temperature = temperature + 5'd1;
-		prev_state = state;
+			
+			temperature = temperature + 5'd1;
+			
+			prev_state = state;
 		end
 
 	end
