@@ -1,6 +1,6 @@
 `timescale 1ns / 100ps
 
-module lights (rst,clk,button,colour);
+module selLights (rst,clk,button,colour);
 
 	//adding ports
 	input rst,clk,button;

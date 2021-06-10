@@ -29,21 +29,21 @@ module lightSelector(clk,sel,rst,button,light);
 	wire [23:0] rgb;
 	
 	//instantiate all instances of lower level files here
-	lights lights(
+	selLights lights(
 	.clk(clk),
 	.rst(rst),
 	.button(button),
 	.colour(colour)
 	);
 	
-	converter converter(
+	colConverter converter(
 	.clk(clk),
 	.enable(1),//want enable always = 1, always want look up to take place
 	.colour(colour),
 	.rgb(rgb)
 	);
 	
-	multiplexer mulitplexer(
+	mplx mulitplexer(
 	.a(white),
 	.b(rgb),
 	.sel(sel),

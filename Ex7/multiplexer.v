@@ -2,7 +2,7 @@
 
 `timescale 1ns / 100ps
 
-module multiplexer(
+module mplx(
     input [23:0] a,
 	input [23:0] b,
 	input sel,

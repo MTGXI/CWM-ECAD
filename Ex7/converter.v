@@ -1,6 +1,6 @@
 `timescale 1ns / 100ps
 
-module converter(clk,enable,colour,rgb);
+module colConverter(clk,enable,colour,rgb);
 
 	//ports
 	input clk,enable;
