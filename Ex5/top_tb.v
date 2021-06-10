@@ -57,10 +57,17 @@ module top_tb(
 				err = 1;
 			end
 
-			
-			//if (countDir==30 || countDir==15)begin
-			//	countDir=~countDir;
-			//end
+			//checks if idle whether heating or cooling is turned on as expected
+			if ((prev_state == 2'b00)&&(state == 2'b00)) begin
+				if (temperature<=18) begin
+					$display("***TEST FAILED 4***");
+					err = 1;
+				end
+				else if (temperature>=22) begin
+					$display("***TEST FAILED 5***");
+					err = 1;
+				end
+			end
 			
 			temperature = temperature + 5'd1;
 			
@@ -68,9 +75,6 @@ module top_tb(
 		end
 
 	end
-
-	//implementation of state reg in test bench wasn't working, haven't fully implement all logic as a result
-	//hopefully can see that it works to a simple level
 
 
 	//end sim block
