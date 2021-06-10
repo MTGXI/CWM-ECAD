@@ -11,13 +11,15 @@
 //  outputs:
 //           heating, cooling
 //////////////////////////////////////////////////////////////////////////////////
+`timescale 1ns / 100ps
 
-
-module top(
-    input clk_p,
-    input clk_n,
-     //Todo: add all other ports besides clk_n and clk_p 
-   );
+module top(clk_p,clk_n,rst_n,heating,cooling,temperature_0,temperature_1,temperature_2,temperature_3,temperature_4);
+    
+    input clk_p,clk_n,rst_n,temperature_0,temperature_1,temperature_2,temperature_3,temperature_4;
+	//input [4:0] temperature;
+	output heating;
+	output cooling;
+    
     
 
    /* clock infrastructure, do not modify */
@@ -30,12 +32,21 @@ module top(
 );
 
      wire clk; //use this signal as a clock for your design
-        
+     
+     //generating a temperature wire from all the input ports - RMB is index 0
+     wire [4:0] temperature = {temperature_4,temperature_3,temperature_2,temperature_1,temperature_0};
+       
      BUFG bufg_clk (
 	.I  (clk_ibufds),
 	.O  (clk)
       );
 
-//Add logic here
+	//Add logic here
+	AC airconditioning(
+	.clk(clk),
+	.temperature(temperature),
+	.heating(heating),
+	.cooling(cooling)
+	);
 
 endmodule
