@@ -3,7 +3,7 @@ EXERCISE 8 - REPORT
 Q1:
 	Initially there were 3 critical warnings in the synthesis and then 5 more in the actual implementation that were flagged on the first run through. On 		  inspection, it appeared that these were small errors in my constraints file. Of course, timing constraints affect synthesis more and sure enough the 3 synthesis CW came from the same constraint.
 	Rerunning after correcting these and some small errors removed the critical errors entirely and there were a couple of other WARNINGS, namely:
-		[Synth 8-3331] design top has unconnected port rst_n
+		[Synth 8-3331] design top has unconnected port rst_n - this is because this won't be used until Ex9
 		[Constraints 18-5210] No constraints selected for write - this may be just because the constraints are being ignored
 
 Q2:
@@ -18,9 +18,9 @@ Q4:
 Q5:
 	There were 2 FF used
 Q6:
-	BRAM usage was:
+	BRAM usage was: 4320 BRAMs
 Q7:
-	The expected power consuption of the design was 2.475W - in comparison to a modern desktop processor with TDPs of over 100W, this shows the relative scale!
+	The expected power consuption of the design was 2.475W - in comparison to a modern desktop processor with TDPs of over 100W, this shows the relative scale of FPGAs vs general CPUs!
 
 Q8:
 	The synthesis took 3:57 and the implementation took a further 13:52 to give a total time of 17:49

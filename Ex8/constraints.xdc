@@ -46,11 +46,9 @@ set_property PULLUP true [get_ports rst_n]
 
 ######timing constraints######
 
-#potential phase offset?
-create_clock -name clk_n  -period 10.0 waveform {5.0 10.0} [get_ports clk_n]
-create_clock -name clk_p  -period 10.0 [get_ports clk_p]
+create_clock -name clk  -period 10.0 [get_ports clk_p]
 
-set_clock_groups -asynchronous -group [get_clocks -include_generated_clocks clk_n] -group [get_clocks -include_generated_clocks clk_p]
+set_clock_groups -asynchronous -group [get_clocks -include_generated_clocks clk]
 
 
 
