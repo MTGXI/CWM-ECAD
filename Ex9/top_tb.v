@@ -16,9 +16,12 @@ module top_tb(
 	
 
 	//registers
-	reg clk,err,button,sel,rst;
+	reg clk,err,button,sel,rst,selShutdown;
 	reg [4:0] temperature;
 	reg [1:0] prev_state;
+	
+	reg acSysOut;
+	reg ligtSysOut;
 	
 	wire heating,cooling;
 	wire [1:0] state = {heating,cooling};
@@ -77,6 +80,12 @@ module top_tb(
 			
 			prev_state = state;
 		end
+		
+		selShutdown = 1;
+		if (acSysOutput!=light) begin
+			$display("***TEST FAILED NEW***");
+			err = 1;
+		end
 		//////////////////////////////////////////////////////////////////////////////
 	end
 
@@ -91,6 +100,7 @@ module top_tb(
 		lightPrev=light;
 
 		sel = 0;
+		selShutdown=1;
 		#(CLK_PERIOD)
 		if (light != 24'hffffff) begin
 			$display("***TEST FAILED 1***");
@@ -134,7 +144,16 @@ module top_tb(
 			lightPrev=light;
 		end
 		
+		
+		//////////NEW LOGIC FOR ADDITIONAL FEATURE////////
+		selShutdown = 1;
+		if (lightSysOutput!=light) begin
+			$display("***TEST FAILED NEW***");
+			err = 1;
+		end
+		
 	end
+		
 
 	//end sim block
 	initial begin
@@ -142,7 +161,7 @@ module top_tb(
         if (err==0)
           $display("***TEST PASSED***");
         $finish;
-      end
+     end
 
 
 	//instantiation
@@ -156,6 +175,4 @@ module top_tb(
 	.sel(sel),
 	.light(light)
 	);
-
-endmodule
 endmodule

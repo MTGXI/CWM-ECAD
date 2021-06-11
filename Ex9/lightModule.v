@@ -15,7 +15,7 @@
 //////////////////////////////////////////////////////////////////////////////////
 `timescale 1ns / 100ps
 
-module lightSelector(clk,sel,rst,button,light);
+module lightSelector (clk,sel,rst,button,light);
 
 	//ports
 	input clk,sel,rst,button;

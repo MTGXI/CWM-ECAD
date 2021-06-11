@@ -13,14 +13,15 @@
 //////////////////////////////////////////////////////////////////////////////////
 `timescale 1ns / 100ps
 
-module top(/*clk_p,clk_n,*/rst_n,heating,cooling,temperature_0,temperature_1,temperature_2,temperature_3,temperature_4,clk,sel,button,light);
+module top(clk_p,clk_n,rst_n,heating,cooling,temperature_0,temperature_1,temperature_2,temperature_3,temperature_4,clk,sel,button,light,selShutdown);
     
-    //input clk_p,clk_n,
-    input rst_n,temperature_0,temperature_1,temperature_2,temperature_3,temperature_4,clk,sel,button,light;
+    input clk_p,clk_n;
+    input rst_n,temperature_0,temperature_1,temperature_2,temperature_3,temperature_4,clk,sel,button,selShutdown;
 	//input [4:0] temperature;
 	output heating;
 	output cooling;
-	output [23:0] light;
+	wire [23:0] light;
+	output [23:0] lightSysOut;
     
 	//define white
 	reg [23:0] white = 24'hffffff;
@@ -33,6 +34,9 @@ module top(/*clk_p,clk_n,*/rst_n,heating,cooling,temperature_0,temperature_1,tem
      
     //generating a temperature wire from all the input ports - RMB is index 0
     wire [4:0] temperature = {temperature_4,temperature_3,temperature_2,temperature_1,temperature_0};
+    
+    wire stateOut = {heating,cooling};
+    output [1:0] acSysOut;
 
    /* clock infrastructure, do not modify*/
     wire clk_ibufds;
@@ -49,6 +53,7 @@ module top(/*clk_p,clk_n,*/rst_n,heating,cooling,temperature_0,temperature_1,tem
       );
 
 	//Add logic here
+	
 	AC airconditioning(
 	.clk(clk),
 	.temperature(temperature),
@@ -63,5 +68,18 @@ module top(/*clk_p,clk_n,*/rst_n,heating,cooling,temperature_0,temperature_1,tem
 	.sel(sel),
 	.light(light)
 	);
-
+	
+	mplx lightOut(
+		.a(0),
+		.b(light),
+		.sel(selShutdown),
+		.out(lightSysOut)
+	);
+	
+	mplx acOut(
+		.a(0),
+		.b(stateOut),
+		.sel(selShutdown),
+		.out(acSysOut)
+	);
 endmodule

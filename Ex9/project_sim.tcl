@@ -1,5 +1,5 @@
 
-set design "Ex9"
+set design "Ex8"
 set top top
 set sim_top top_tb
 set device xcvu9p-fsgd2104-2L-e
@@ -17,13 +17,15 @@ set_property top ${top} [current_fileset]
 puts "Creating Project"
 
 create_fileset -constrset -quiet constraints
-#IP
-create_ip -name blk_mem_gen -vendor xilinx.com -library ip -version 8.4 -module_name mybram  -dir ${repo_dir}
+
+create_ip -name blk_mem_gen -vendor xilinx.com -library ip -version 8.4 -module_name mybram -dir ${repo_dir} 
 set_property -dict [list CONFIG.Component_Name {mybram} CONFIG.Write_Width_A {24} CONFIG.Write_Depth_A {8} CONFIG.Read_Width_A {24} CONFIG.Write_Width_B {24} CONFIG.Read_Width_B {24} CONFIG.Load_Init_File {true} CONFIG.Coe_File {../../mem.coe} CONFIG.Fill_Remaining_Memory_Locations {true}] [get_ips mybram]
 
-read_verilog "lights.v"
+
 read_verilog "converter.v"
 read_verilog "multiplexer.v"
+read_verilog "lights.v"
+read_verilog "lightModule.v"
 read_verilog "airconditioning.v"
 read_verilog "top.v"
 read_verilog "top_tb.v"
