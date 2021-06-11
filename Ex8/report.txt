@@ -4,7 +4,7 @@ Q1:
 	Initially there were 3 critical warnings in the synthesis and then 5 more in the actual implementation that were flagged on the first run through. On 		  inspection, it appeared that these were small errors in my constraints file. Of course, timing constraints affect synthesis more and sure enough the 3 synthesis CW came from the same constraint.
 	Rerunning after correcting these and some small errors removed the critical errors entirely and there were a couple of other WARNINGS, namely:
 		[Synth 8-3331] design top has unconnected port rst_n - this is because this won't be used until Ex9
-		[Constraints 18-5210] No constraints selected for write - this may be just because the constraints are being ignored
+		[Constraints 18-5210] No constraints selected for write - this may be just because the constraints are being ignored and is a derivative issue in Xilinx
 
 Q2:
 	The worst case hold time was: 0.076 time units
